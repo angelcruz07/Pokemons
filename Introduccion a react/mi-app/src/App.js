@@ -1,28 +1,29 @@
-// import "./App.css";
+import { Component } from "react";
 
-// //Anatomia de un componente
-// function Li({children}){
-//   //Estilos en linea
-//   const style = {
-//     backgroundColor:'#000',
-//     color:'#fff'
-//   }
-//   return (
-//     <li className="list">{children}</li>
-//   )
-// }
-
-// function App() {
-//   const name = 'Mundo'
-//   return (
-//    <ul className="ul-react">
-//     <Li>{'El pepe'}</Li>
-//    </ul>
-//   );
-// }
+class Button extends Component {
+  render() {
+    console.log("Ejecutando el render de boton ");
+    return <button>enviar</button>;
+  }
+}
 
 
 
-//Anatomi
-
+class App extends Component {
+  // El estado de un componente siempre debe ser el siguiente
+  state = {
+    valor: 3,
+  };
+  render() {
+    console.log(this.state);
+    return (
+      <div>
+        <p>Hola mundo con componente en clase</p>
+        <Button />
+        <button onClick={() => this.setState({ valor: 2 })}>Enviar</button>
+      </div>
+    );
+  }
+}
 export default App;
+
