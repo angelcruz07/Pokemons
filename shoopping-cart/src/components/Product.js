@@ -5,7 +5,6 @@ const styles = {
   product: {
     border: "1px solid #eee",
     boxShadow: "0  5px 5px rgba(0, 0, 0, 0.1)",
-    width: "30%",
     padding: "10px 15px",
     borderRadius: "5px",
   },

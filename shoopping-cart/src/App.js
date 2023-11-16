@@ -11,9 +11,8 @@ class App extends Component {
       { name: "Arbejas", price: 3500, img: "/products/arbejas.jpg" },
       { name: "Lechuga", price: 2300, img: "/products/lechuga.jpg" },
     ],
-    cart: [
-      // { name: "Tomate", price: 1500, img: "/products/tomates.jpg", amount: 1 },
-    ],
+    cart: [],
+    isCartVisible: false,
   };
 
   addCart = (product) => {
@@ -37,11 +36,22 @@ class App extends Component {
     });
   };
 
+  showCart = () => {
+    if (!this.state.cart.length) {
+      return;
+    }
+    this.setState({ isCartVisible: !this.state.isCartVisible });
+  };
+
   render() {
-    console.log(this.state.cart);
+    const { isCartVisible } = this.state;
     return (
       <div>
-        <NavBar />
+        <NavBar
+          isCartVisible={isCartVisible}
+          showCart={this.showCart}
+          cart={this.state.cart}
+        />
         <Layout>
           <Title />
           <Products addCart={this.addCart} products={this.state.products} />

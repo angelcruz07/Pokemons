@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import Logo from "./Logo";
-import Card from "./Card";
+import Cart from "./Cart";
 
 const styles = {
   navbar: {
     display: "flex",
     flexDirection: "row",
-    alingItems: "center",
+    alignItems: "center",
     height: "100px",
     justifyContent: "space-between",
     position: "relative",
@@ -17,10 +17,11 @@ const styles = {
 
 class NavBar extends Component {
   render() {
+    const { cart, isCartVisible, showCart } = this.props;
     return (
       <nav style={styles.navbar}>
         <Logo />
-        <Card />
+        <Cart cart={cart} isCartVisible={isCartVisible} showCart={showCart} />
       </nav>
     );
   }
