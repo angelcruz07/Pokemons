@@ -1,35 +1,50 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Routes, Route, Link } from 'react-router-dom'
 
-function App() {
-  const [count, setCount] = useState(0)
+const Portafolio = () => {
+    return (
+        <div>
+            <h1>Portafolio</h1>
+            <ul>
+                <li>
+                    <Link to="/portafolio/proyecto-1">Proyecto 1</Link>
+                </li>
+                <li>
+                    <Link to="/portafolio/proyecto-2">Proyecto 2</Link>
+                </li>
+            </ul>
+            <div>
+                <Routes>
+                    <Route path="/proyecto-1" element={<h2>Proyecto 1</h2>} />
+                    <Route path="/proyecto-2" element={<h2>Proyecto 2</h2>} />
+                </Routes>
+            </div>
+        </div>
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    )
 }
 
-export default App
+function App() {
+    return (
+        <div>
+            <nav>
+                <ul>
+                    <li>
+                        <Link to='/'>Inicio</Link>
+                    </li>
+                    <li>
+                        <Link to='/portafolio'>Portafolio</Link>
+                    </li>
+                </ul>
+            </nav>
+            <section>
+                <Routes>
+                    <Route path="/" element={<h1>Inicio</h1>} />
+                    <Route path="/portafolio/*" element={<Portafolio />} />
+                    {/* <Route path="/portafolio" element={<h1>Portafolio</h1>} /> */}
+                </Routes>
+            </section>
+        </div>
+    );
+}
+
+export default App;
