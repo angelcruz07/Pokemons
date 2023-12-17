@@ -4,9 +4,11 @@ import { useState } from 'react'
 // Por convencion se debe usar initialState
 const initialState = { 
   entities: [],
+  filter: 'all'
 }
 
 export const reducer = ( state = initialState, action ) => {
+
   switch (action.type) {
     case 'todo/add': {
       console.log('reducer')
@@ -16,15 +18,54 @@ export const reducer = ( state = initialState, action ) => {
         
       }
     }
+    case 'todo/completed': {
+      const newTodos = state.entities.map(todo =>  { 
+        if (todo.id === action.payload.id) {
+          return { ...todo, completed: !todo.completed}
+        }
+        return todo 
+      })
+      return { 
+        ...state,
+        entities: newTodos
+      }
+    }
+    case 'filter/set' : { 
+      return { 
+        ...state, 
+        filter: action.payload,
+      }
+    }
   }
   return state
 }
 
 
+const  selectTodos =  state =>  { 
+
+  const { entities, filter } = state
+
+  if(filter === 'completed') { 
+    return entities.filter(todo => todo.completed )
+  }
+  else if (filter === 'incompleted') { 
+    return entities.filter(todo => !todo.completed)
+  }
+
+  return entities 
+}
+
+
 // Componente de la lista
 const TodoItem  = ({ todo }) => {
+  const dispatch = useDispatch()
+
   return ( 
-    <li>{todo.title}</li>
+    <li
+    style = {{ textDecoration: todo.completed ? 'line-through' : 'none'}}
+    onClick = {() => dispatch({ type: 'todo/completed', payload: todo })}>
+      {todo.title}
+    </li>
   )
 }
 
@@ -33,7 +74,7 @@ const TodoItem  = ({ todo }) => {
 function App() {
   const [value, setValue] = useState('')
   const dispatch = useDispatch()
-  const state = useSelector(x => x)
+  const todos = useSelector(selectTodos)
   
   const submit = e => { 
     e.preventDefault()
@@ -52,11 +93,11 @@ function App() {
     <form onSubmit={submit}>
       <input value={value} onChange={e => setValue(e.target.value)}/>
     </form>
-    <button onClick={ () =>  dispatch({ type: 'todo/add'})}>Mostrar todos</button>
-    <button>Completados</button>
-    <button>Incompletos</button>
+    <button onClick={() =>  dispatch({ type: 'filter/set', payload : 'all'})}>Mostrar todos</button>
+    <button onClick={() => dispatch({ type: 'filter/set' , payload: 'completed'})}>Completados</button>
+    <button onClick={() => dispatch({ type: 'filter/set' , payload: 'incompleted'})}>Incompletos</button>
     <ul>
-      {state.entities.map(todo  => <TodoItem key={todo.id } todo={todo} />)}
+      {todos.map(todo  => <TodoItem key={todo.id } todo={todo} />)}
     </ul>
   </div>
   )
