@@ -1,44 +1,88 @@
 import { useDispatch, useSelector} from 'react-redux'
+import { combineReducers } from 'redux'
 import { useState } from 'react'
 
+
 // Por convencion se debe usar initialState
-const initialState = { 
-  entities: [],
-  filter: 'all'
+// const initialState = { 
+//   entities: [],
+//   filter: 'all'
+// }
+
+
+export const filterReducer = ( state = 'all', action) =>  {
+  switch (action.type) { 
+    case 'filter/set':
+      return action.payload
+      default:
+        return state
+  }
 }
 
-export const reducer = ( state = initialState, action ) => {
-
-  switch (action.type) {
-    case 'todo/add': {
-      console.log('reducer')
-      return { 
-        ...state,
-        entities: state.entities.concat({ ...action.payload})
-        
-      }
+export const todosReducer = ( state = [], action ) => { 
+  switch ( action.type ) {
+    case 'todo/add': { 
+      return  state.concat({ ...action.payload })
     }
     case 'todo/completed': {
-      const newTodos = state.entities.map(todo =>  { 
+      const newTodos = state.map(todo =>  { 
         if (todo.id === action.payload.id) {
           return { ...todo, completed: !todo.completed}
         }
         return todo 
       })
-      return { 
-        ...state,
-        entities: newTodos
-      }
+      return newTodos
     }
-    case 'filter/set' : { 
-      return { 
-        ...state, 
-        filter: action.payload,
-      }
-    }
+    default: 
+      return state
   }
-  return state
 }
+
+// export const reducer = (state = initialState, action) => {
+//   return { 
+//     entities: todosReducer(state.entities, action), 
+//     filter: filterReducer(state.filter, action ),
+//   }
+// }
+
+export const reducer = combineReducers({
+    entities: todosReducer, 
+    filter: filterReducer,
+})
+
+
+// export const reducer = ( state = initialState, action ) => {
+
+//   switch (action.type) {
+//     case 'todo/add': {
+//       console.log('reducer')
+//       return { 
+//         ...state,
+//         entities: state.entities.concat({ ...action.payload})
+        
+//       }
+//     }
+//     case 'todo/completed': {
+//       const newTodos = state.entities.map(todo =>  { 
+//         if (todo.id === action.payload.id) {
+//           return { ...todo, completed: !todo.completed}
+//         }
+//         return todo 
+//       })
+//       return { 
+//         ...state,
+//         entities: newTodos
+//       }
+//     }
+//     case 'filter/set' : { 
+//       return { 
+//         ...state, 
+//         filter: action.payload,
+//       }
+//     }
+//   }
+//   return state
+// }
 
 
 const  selectTodos =  state =>  { 
@@ -71,7 +115,7 @@ const TodoItem  = ({ todo }) => {
 
 
 
-function App() {
+const  App = () => {
   const [value, setValue] = useState('')
   const dispatch = useDispatch()
   const todos = useSelector(selectTodos)
