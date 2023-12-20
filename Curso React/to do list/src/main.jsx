@@ -1,13 +1,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore} from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
-import App, { reducer } from './App.jsx'
-
-
-const store = configureStore({ reducer: reducer }) 
-
-
+import App from './App.jsx'
+import { asyncMiddleware } from './middlewares/async.jsx'
+import { reducer } from './features/todos.jsx'
+const store =  configureStore({
+  reducer:reducer,
+  Middleware:[asyncMiddleware]
+})
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
