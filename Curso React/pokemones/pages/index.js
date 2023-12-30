@@ -1,15 +1,22 @@
 import Link from 'next/link'
 
 export const Pokemon = ({ pokemon }) => {
-  const id = pokemon.url.split('/').filter(x => x).pop()
-  return <li ><Link href={`/pokemones/${id}`}> {pokemon.name}</Link></li>
+  const id = pokemon.url
+    .split('/')
+    .filter((x) => x)
+    .pop()
+  return (
+    <li>
+      <Link href={`/pokemones/${id}`}> {pokemon.name}</Link>
+    </li>
+  )
 }
 
 export default function Home({ pokemones }) {
   return (
     <>
       <div>
-        <p>Pokemones</p>
+        <p>Mi APP de Pokemones</p>
         <ul>
           {pokemones.map((pokemon) => (
             <Pokemon pokemon={pokemon} key={pokemon.name} />
